@@ -1,2 +1,2 @@
-# paul_website
-Portfolio website for paul
+# joe_prussian
+Portfolio website for Joe Prussian Group
