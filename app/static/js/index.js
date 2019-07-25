@@ -15,10 +15,4 @@ $(document).ready(function() {
     $("#section-" + linkId).addClass("active");
     $(this).addClass("active");
   });
-
-  $(".menu-nav").click(function(e) {
-    var targetId = e.target.href.split("-"),
-      linkId = targetId[targetId.length - 1];
-    $("#section-" + linkId + " .menu-nav.active.show").removeClass("active show");
-  });
 });

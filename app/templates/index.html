@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>PAUL WALLINGTON</title>
+  <title>JOE PRUSSIAN</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="author" content="">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.jpg') }}">
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="theme-color" content="#ffffff">
 
@@ -37,8 +37,8 @@
       <div class="sidebar-sticky">
         <h3 class="site-heading pl-3" style="position: relative">
           <a href="#" id="home-link">
-            Paul <br>
-            Wallington
+            JOE <br>
+            PRUSSIAN
           </a>
           <button class="navbar-toggler pull-right border-0 text-dark"
                   type="button"
@@ -54,13 +54,13 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="nav flex-column">
             {% for link in links %}
-            <li class="nav-item">
+              <li class="nav-item">
                 <span class="nav-link text-secondary py-0"
                       id="nav-{{ link.id }}"
                 >
                   {{ link.name }}
                 </span>
-            </li>
+              </li>
             {% endfor %}
             <li class="nav-item">
                 <span class="nav-link text-secondary py-0" id="nav-about">
@@ -80,60 +80,44 @@
         </div>
       </div>
       {% for link in links %}
-      <div class="row section px-3" id="section-{{ link.id }}">
-        <ul class="nav nav-tabs w-100 mb-3">
-          <li>
-            <h5><a class="menu-nav active show" data-toggle="tab" href="#photos-{{ link.id }}">Photos</a>
-            </h5>
-          </li>
-          {% if link.text %}
-          <li class="active">
-            <h5><a class="menu-nav" data-toggle="tab" href="#text-{{ link.id }}">Text</a></h5>
-          </li>
-          {% endif %}
-        </ul>
-        <div class="tab-content w-100">
-          <div id="photos-{{ link.id }}" class="tab-pane fade show active">
-            {% for image in link.images %}
+        <div class="row section px-3" id="section-{{ link.id }}">
+          <div class="col-12 px-0 pb-3 text-right">
+            <h4>{{ link.name }}</h4>
+            {% if link.text %}
+                {{ link.text }}
+            {% endif %}
+          </div>
+          {% for image in link.images %}
             {% if image.full_width %}
-            <div class="w-100">
-              {% endif %}
-              <div style="width: {{ image.display_width }}%;
-                            {% if image.align in ['left', 'right'] %}
-                              text-align: {{ image.align }};
-                              {% if image.align == 'left' %}
-                                margin-right: auto;
-                              {% else %}
-                                margin-left: auto;
-                              {% endif %}
-                            {% elif image.align == 'center' %}
-                              margin: auto;
-                            {% endif %}">
-                <img src="{{ url_for('static', filename='images/uploads/' + image.url) }}"
-                     style="width: 100%;">
-                <div class="row pt-3 pb-5">
-                  <div class="col-md-12">
-                    <p>
-                      <b>{{ image.title }}</b> <br>
-                      {{ image.year }} <br>
-                      {{ image.materials }} <br>
-                      {{ image.width }}cm x {{ image.height }}cm
-                    </p>
-                  </div>
+              <div class="w-100">
+            {% endif %}
+            <div style="width: {{ image.display_width }}%;
+              {% if image.align in ['left', 'right'] %}
+                text-align: {{ image.align }};
+                {% if image.align == 'left' %}
+                  margin-right: auto;
+                {% else %}
+                  margin-left: auto;
+                {% endif %}
+              {% elif image.align == 'center' %}
+                margin: auto;
+              {% endif %}">
+              <img src="{{ url_for('static', filename='images/uploads/' + image.url) }}"
+                  style="width: 100%;">
+              <div class="row pt-3 pb-5">
+                <div class="col-md-12">
+                  <p>
+                    <b>{{ image.title }}</b> <br>
+                    {{ image.day }}/{{ image.month }}/{{ image.year }}
+                  </p>
                 </div>
               </div>
-              {% if image.full_width %}
             </div>
+            {% if image.full_width %}
+              </div>
             {% endif %}
-            {% endfor %}
-          </div>
-          {% if link.text %}
-          <div id="text-{{ link.id }}" class="tab-pane fade">
-            <p>{{ link.text }}</p>
-          </div>
-          {% endif %}
+          {% endfor %}
         </div>
-      </div>
       {% endfor %}
       <div class="row section" id="section-about" style="font-size: 1rem; line-height: 2rem;">
         <div class="col-md-9">

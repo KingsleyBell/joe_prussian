@@ -1,5 +1,6 @@
 import json
 import os
+import re
 
 from flask import Flask, jsonify, redirect, render_template, request, url_for
 from werkzeug.utils import secure_filename
@@ -48,7 +49,7 @@ def new_section():
     db = json.loads(open(db_path, 'r').read())
     if request.method == 'POST':
         section_name = request.form.get('section')
-        section_id = section_name.replace(' ', '_').lower()
+        section_id = re.sub('[^A-Za-z0-9]+', '_', section_name).lower()
         section_dict = {'name': section_name, 'id': section_id, 'text': '', 'images': []}
         db.append(section_dict)
         with open(db_path, 'w') as db_write:
@@ -67,7 +68,7 @@ def edit_section(section_id):
     section = [s for s in db if s['id'] == section_id][0]
     if request.method == 'POST':
         section_name = request.form.get('name')
-        section_id = section_name.replace(' ', '_').lower()
+        section_id = re.sub('[^A-Za-z0-9]+', '_', section_name).lower()
         section_text = request.form.get('text')
 
         section['name'] = section_name
@@ -92,18 +93,16 @@ def edit_image(section_id, image_id):
     if request.method == 'POST':
         title = request.form.get('title')
         year = request.form.get('year')
-        width = request.form.get('width')
-        height = request.form.get('height')
-        materials = request.form.get('materials')
+        month = request.form.get('month')
+        day = request.form.get('day')
         display_width = request.form.get('display_width')
         align = request.form.get('align')
         full_width = request.form.get('full_width') == "true"
 
         image["title"] = title
         image["year"] = year
-        image["width"] = width
-        image["height"] = height
-        image["materials"] = materials
+        image["month"] = month
+        image["day"] = day
         image["display_width"] = display_width
         image["align"] = align
         image["full_width"] = full_width
@@ -161,9 +160,8 @@ def upload(section_id=None):
 
         title = request.form.get('title')
         year = request.form.get('year')
-        width = request.form.get('width')
-        height = request.form.get('height')
-        materials = request.form.get('materials')
+        month = request.form.get('month')
+        day = request.form.get('day')
         display_width = request.form.get('display_width')
         align = request.form.get('align')
         full_width = request.form.get('full_width') == "true"
@@ -179,9 +177,8 @@ def upload(section_id=None):
             "url": filename,
             "title": title,
             "year": year,
-            "width": width,
-            "height": height,
-            "materials": materials,
+            "month": month,
+            "day": day,
             "display_width": display_width,
             "align": align,
             "full_width": full_width
