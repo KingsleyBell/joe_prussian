@@ -29,6 +29,8 @@ def home():
 def sections():
     db_path = os.path.join(application.static_folder, 'db/db.json')
     db = json.loads(open(db_path, 'r').read())
+    shows = [section for section in db if section['type'] == 'show']
+    artists = [section for section in db if section['type'] == 'artist']
     if request.method == 'POST':  # Delete section
         section_id = request.form.get('section_id')
 
@@ -42,7 +44,7 @@ def sections():
 
         return jsonify({'success': True})
     else:
-        return render_template('sections.html', db=db)
+        return render_template('sections.html', shows=shows, artists=artists)
 
 
 @application.route('/new_section/', methods=['GET', 'POST'])
