@@ -33,10 +33,6 @@
            class="btn btn-outline-dark">
           New Home Image
         </a>
-        <a href="{{ url_for('new_cv') }}"
-           class="btn btn-outline-dark">
-          New CV
-        </a>
       </h3>
       {% for section in db %}
       <div class="card mb-3" id="section-{{ section.id }}">
@@ -95,7 +91,6 @@
                 </a>
                 <br>
                 <small>
-                  {{ image.day }}/{{ image.month }}/{{ image.year }} |
                   {{ image.display_width }}% |
                   {{ image.align }} |
                   Full width: {{ image.full_width }}
