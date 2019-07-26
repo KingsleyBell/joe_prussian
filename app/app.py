@@ -51,9 +51,16 @@ def new_section():
     db_path = os.path.join(application.static_folder, 'db/db.json')
     db = json.loads(open(db_path, 'r').read())
     if request.method == 'POST':
+        section_type = request.form.get('type')
         section_name = request.form.get('section')
         section_id = re.sub('[^A-Za-z0-9]+', '_', section_name).lower()
-        section_dict = {'name': section_name, 'id': section_id, 'text': '', 'images': []}
+        section_dict = {
+            'type': section_type,
+            'name': section_name,
+            'id': section_id,
+            'text': '',
+            'images': []
+        }
         db.append(section_dict)
         with open(db_path, 'w') as db_write:
             db_write.write(json.dumps(db))
