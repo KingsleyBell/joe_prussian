@@ -106,17 +106,16 @@ def edit_image(section_id, image_id):
     image = [i for i in section['images'] if i['id'] == image_id][0]
     if request.method == 'POST':
         title = request.form.get('title')
-        year = request.form.get('year')
-        month = request.form.get('month')
-        day = request.form.get('day')
+        section_name = request.form.get('section')
         display_width = request.form.get('display_width')
         align = request.form.get('align')
         full_width = request.form.get('full_width') == "true"
 
+        db_section = [s for s in db if s['name'] == section_name][0]
+        db_section['images'].append(image)
+        section['images'].remove(image)
+
         image["title"] = title
-        image["year"] = year
-        image["month"] = month
-        image["day"] = day
         image["display_width"] = display_width
         image["align"] = align
         image["full_width"] = full_width
@@ -135,7 +134,7 @@ def edit_image(section_id, image_id):
         )
 
 
-@application.route('/edit_image/', methods=['POST'])
+@application.route('/delete_image/', methods=['POST'])
 @requires_auth
 def delete_image():
     section_id = request.form.get('section_id')
@@ -173,9 +172,6 @@ def upload(section_id=None):
         db_section = [s for s in db if s['id'] == section][0]
 
         title = request.form.get('title')
-        year = request.form.get('year')
-        month = request.form.get('month')
-        day = request.form.get('day')
         display_width = request.form.get('display_width')
         align = request.form.get('align')
         full_width = request.form.get('full_width') == "true"
