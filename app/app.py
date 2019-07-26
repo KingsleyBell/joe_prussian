@@ -178,17 +178,15 @@ def upload(section_id=None):
 
         image_file = request.files.get('file')
         file_extension = image_file.filename.split('.')[-1]
-        upload_folder = os.path.join(application.static_folder, 'images/uploads')
+        subdir = f'{db_section["type"]}s'
+        upload_folder = os.path.join(application.static_folder, f'images/uploads/{subdir}')
         filename = secure_filename(str(image_id) + '.' + file_extension)
         image_file.save(os.path.join(upload_folder, filename))
 
         image_dict = {
             "id": image_id,
-            "url": filename,
+            "url": f'{subdir}/{filename}',
             "title": title,
-            "year": year,
-            "month": month,
-            "day": day,
             "display_width": display_width,
             "align": align,
             "full_width": full_width
