@@ -61,7 +61,7 @@
                 Shows
               </span>
               <div class="dropdown-menu" aria-labelledby="shows-dropdown" style="font-size: inherit;">
-                {% for show in links.shows %}
+                {% for show in shows %}
                   <span class="nav-link text-secondary py-0"
                         id="nav-{{ show.id }}"
                   >
@@ -75,7 +75,7 @@
                 Artists
               </span>
               <div class="dropdown-menu" aria-labelledby="artists-dropdown" style="font-size: inherit;">
-                {% for artist in links.artists %}
+                {% for artist in artists %}
                   <span class="nav-link text-secondary py-0"
                         id="nav-{{ artist.id }}"
                   >
@@ -105,7 +105,7 @@
           </div>
         </div>
       </div>
-      {% for show in links.shows %}
+      {% for show in shows %}
         <div class="row section px-3" id="section-{{ show.id }}">
           <div class="col-12 px-0 pb-3">
             <h4>{{ show.name }}</h4>
@@ -138,7 +138,7 @@
           {% endfor %}
         </div>
       {% endfor %}
-      {% for artist in links.artists %}
+      {% for artist in artists %}
         <div class="row section px-3" id="section-{{ artist.id }}">
           {% for image in artist.images %}
             {% if image.full_width %}
@@ -182,11 +182,6 @@
             JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN
             JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN
           </p>
-          <a href="{{ url_for('cv') }}"
-             target="_blank"
-             class="btn btn-outline-dark btn-sm my-4 rounded-0">
-            Curriculum Vitae
-          </a>
         </div>
       </div>
     </main>

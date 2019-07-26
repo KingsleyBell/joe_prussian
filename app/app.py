@@ -15,9 +15,12 @@ application = Flask(__name__)
 def home():
     db_path = os.path.join(application.static_folder, 'db/db.json')
     db = json.loads(open(db_path, 'r').read())
+    shows = [section for section in db if section['type'] == 'show']
+    artists = [section for section in db if section['type'] == 'artist']
     return render_template(
         'index.html',
-        links=db
+        shows=shows,
+        artists=artists
     )
 
 
@@ -206,25 +209,6 @@ def new_home_image():
         return redirect(url_for('sections'))
     else:
         return render_template('upload_file.html', form_label='New Home Image (must be jpg)')
-
-
-@application.route('/new_cv/', methods=['GET', 'POST'])
-@requires_auth
-def new_cv():
-    if request.method == 'POST':
-        cv_file = request.files.get('file')
-        upload_folder = os.path.join(application.static_folder, 'pdf')
-        filename = "CV.pdf"
-        cv_file.save(os.path.join(upload_folder, filename))
-
-        return redirect(url_for('sections'))
-    else:
-        return render_template('upload_file.html', form_label='New CV (must be pdf)')
-
-
-@application.route('/cv')
-def cv():
-    return application.send_static_file('pdf/CV.pdf')
 
 
 @application.route('/shift_section_position', methods=['POST'])
