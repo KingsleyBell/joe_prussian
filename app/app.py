@@ -239,9 +239,7 @@ def shift_section_position():
         return jsonify({'success': False})
 
     swap_index = db.index(type_db[section_type_index + shift])
-    print(section_type_index + shift)
-    print(type_db[section_type_index + shift])
-    print(section_index, swap_index)
+
     db[section_index], db[swap_index] = db[swap_index], db[section_index]
 
     with open(db_path, 'w') as db_write:
