@@ -27,13 +27,16 @@
   <!-- Your stuff: Third-party CSS libraries go here -->
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
         rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono&display=swap" rel="stylesheet">
   <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
 </head>
 
 <body>
 <div class="container-fluid mt-5 pb-5">
   <div class="row">
-    <nav class="col-md-2 sidebar navbar navbar-expand-lg navbar-light pb-4" id="home-nav">
+    <nav class="col-md-2 sidebar navbar navbar-expand-lg navbar-light pb-4"
+         id="home-nav"
+         style="opacity: 0;">
       <div class="sidebar-sticky">
         <h3 class="site-heading pl-3" style="position: relative">
           <a href="#" id="home-link">
@@ -53,15 +56,34 @@
         </h3>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="nav flex-column">
-            {% for link in links %}
-              <li class="nav-item">
-                <span class="nav-link text-secondary py-0"
-                      id="nav-{{ link.id }}"
-                >
-                  {{ link.name }}
-                </span>
-              </li>
-            {% endfor %}
+            <li class="nav-item dropdown">
+              <span class="dropdown-toggle px-3" id="shows-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Shows
+              </span>
+              <div class="dropdown-menu" aria-labelledby="shows-dropdown" style="font-size: inherit;">
+                {% for show in links.shows %}
+                  <span class="nav-link text-secondary py-0"
+                        id="nav-{{ show.id }}"
+                  >
+                    {{ show.name }}
+                  </span>
+              {% endfor %}
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+              <span class="dropdown-toggle px-3" id="artists-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Artists
+              </span>
+              <div class="dropdown-menu" aria-labelledby="artists-dropdown" style="font-size: inherit;">
+                {% for artist in links.artists %}
+                  <span class="nav-link text-secondary py-0"
+                        id="nav-{{ artist.id }}"
+                  >
+                    {{ artist.name }}
+                  </span>
+              {% endfor %}
+              </div>
+            </li>
             <li class="nav-item">
                 <span class="nav-link text-secondary py-0" id="nav-about">
                   About
@@ -75,19 +97,24 @@
     <main role="main" class="col-md-8 px-4">
       <div class="row section px-3 active" id="section-web-home">
         <div class="col-md-12 px-0 pb-5 text-center">
-          <img src="{{ url_for('static', filename='images/home.jpg') }}"
-               style="max-height: 90vh; max-width: 100%;">
+          <h3>JOE PRUSSIAN</h3>
+          <div class="img_wrap" id="enter">
+            <h3 class="img_description">ENTER</h3>
+            <img src="{{ url_for('static', filename='images/home.jpg') }}"
+                 style="max-height: 90vh; max-width: 100%;">
+          </div>
         </div>
       </div>
-      {% for link in links %}
-        <div class="row section px-3" id="section-{{ link.id }}">
-          <div class="col-12 px-0 pb-3 text-right">
-            <h4>{{ link.name }}</h4>
-            {% if link.text %}
-                {{ link.text }}
+      {% for show in links.shows %}
+        <div class="row section px-3" id="section-{{ show.id }}">
+          <div class="col-12 px-0 pb-3">
+            <h4>{{ show.name }}</h4>
+            {% if show.text %}
+                {{ show.text }}
             {% endif %}
+            <hr>
           </div>
-          {% for image in link.images %}
+          {% for image in show.images %}
             {% if image.full_width %}
               <div class="w-100">
             {% endif %}
@@ -104,14 +131,6 @@
               {% endif %}">
               <img src="{{ url_for('static', filename='images/uploads/' + image.url) }}"
                   style="width: 100%;">
-              <div class="row pt-3 pb-5">
-                <div class="col-md-12">
-                  <p>
-                    <b>{{ image.title }}</b> <br>
-                    {{ image.day }}/{{ image.month }}/{{ image.year }}
-                  </p>
-                </div>
-              </div>
             </div>
             {% if image.full_width %}
               </div>
@@ -119,21 +138,49 @@
           {% endfor %}
         </div>
       {% endfor %}
+      {% for artist in links.artists %}
+        <div class="row section px-3" id="section-{{ artist.id }}">
+          {% for image in artist.images %}
+            {% if image.full_width %}
+              <div class="w-100">
+            {% endif %}
+            <div style="width: {{ image.display_width }}%;
+              {% if image.align in ['left', 'right'] %}
+                text-align: {{ image.align }};
+                {% if image.align == 'left' %}
+                  margin-right: auto;
+                {% else %}
+                  margin-left: auto;
+                {% endif %}
+              {% elif image.align == 'center' %}
+                margin: auto;
+              {% endif %}">
+              <img src="{{ url_for('static', filename='images/uploads/' + image.url) }}"
+                  style="width: 100%;">
+            </div>
+            {% if image.full_width %}
+              </div>
+            {% endif %}
+          {% endfor %}
+          <div class="col-12 px-0 pb-3">
+            <hr>
+            <h4>{{ artist.name }}</h4>
+            {% if artist.text %}
+                {{ artist.text }}
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
       <div class="row section" id="section-about" style="font-size: 1rem; line-height: 2rem;">
         <div class="col-md-9">
           <p>
-            Paul Wallington was born in Johannesburg in 1993 and raised in Plettenberg Bay.
-            He is in his final year at the Michaelis school of fine art Cape Town, South Africa.
-            Paul works predominantly in oil painting where he draws strong inspiration from South
-            African literature and poetry.
-            His paintings exist within a larger narrative set by writers who’s stories hold a
-            powerful resonance within South Africa today.
-            These novels attempt to explain or dissect the ongoing narrative within South Africa and
-            challenge our idea of truth.
-            That “truth” is further muddied when created on the canvas through oil paint.
-            It is in this world of visual metaphors where these ideas become tangible.
-            Strong links to artists such as Francis Bacon and Francisco Goya are visible in his
-            paintings.
+            JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN
+            JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN
+            JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN
+            JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN
+            JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN
+            JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN
+            JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN JOE PRUSSIAN
           </p>
           <a href="{{ url_for('cv') }}"
              target="_blank"
@@ -143,6 +190,7 @@
         </div>
       </div>
     </main>
+    <div class="col-md-2"></div>
   </div>
 </div>
 <div class="footer">
